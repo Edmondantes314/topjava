@@ -23,12 +23,8 @@ public class MealServlet extends HttpServlet {
     private static final Logger log = getLogger(MealServlet.class);
 
 
-    /*
-     из сервлета преобразуете еду в List<MealTo>;
-кладете список в запрос (request.setAttribute);
-делаете forward на jsp для отрисовки таблицы (при redirect атрибуты теряются).*/
-    protected void processRequest(HttpServletRequest request,
-                                  HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        log.debug("get all meals");
         List<Meal> meals = Arrays.asList(
                 new Meal(LocalDateTime.of(2020, Month.JANUARY, 30, 10, 0), "Завтрак", 500),
                 new Meal(LocalDateTime.of(2020, Month.JANUARY, 30, 13, 0), "Обед", 1000),
@@ -39,15 +35,9 @@ public class MealServlet extends HttpServlet {
                 new Meal(LocalDateTime.of(2020, Month.JANUARY, 31, 20, 0), "Ужин", 410)
         );
 
-        List<MealTo> mealsTo = MealsUtil.filteredByStreams(meals, LocalTime.of(7, 0), LocalTime.of(12, 0), 2000);
+        List<MealTo> mealsTo = MealsUtil.filteredByStreams(meals, LocalTime.MIN, LocalTime.MAX, 2000);
         request.setAttribute("mealList", mealsTo);
         RequestDispatcher requestDispatcher = request.getRequestDispatcher("/meals.jsp");
         requestDispatcher.forward(request, response);
-
-    }
-
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        log.debug("redirect to meals");
-        processRequest(request, response);
     }
 }
