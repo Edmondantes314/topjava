@@ -7,27 +7,30 @@
 
 </head>
 <body>
-<h1>Displaying Meal List</h1>
-<table border="1" width="500" align="center">
-    <tr bgcolor="00FF7F">
-        <th><b>Time</b></th>
-        <th><b>Description</b></th>
-        <th><b>Calories</b></th>
+<table border=1>
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Time</th>
+        <th>Description</th>
+        <th>Calories</th>
+        <th colspan=2>Action</th>
     </tr>
-
-    <c:forEach items="${mealList}" var="m">
-        <tr style="${m.excess==true ? 'color: #8b0000; ' : 'color:#006400; ' } ">
-            <fmt:parseDate value="${ m.dateTime }" pattern="yyyy-MM-dd'T'HH:mm" var="parsedDate"/>
-            <td><fmt:formatDate pattern="yyyy-MM-dd HH:mm"
-                                value="${ parsedDate}"/>
-            </td>
-            <td>${m.description}
-            </td>
-            <td>${m.calories}
-            </td>
+    </thead>
+    <tbody>
+    <c:forEach items="${users}" var="user">
+        <tr>
+            <td><c:out value="${user.userid}" /></td>
+            <td><c:out value="${user.firstName}" /></td>
+            <td><c:out value="${user.lastName}" /></td>
+            <td><fmt:formatDate pattern="yyyy-MMM-dd" value="${user.dob}" /></td>
+            <td><c:out value="${user.email}" /></td>
+            <td><a href="UserController?action=edit&userId=<c:out value="${user.userid}"/>">Update</a></td>
+            <td><a href="UserController?action=delete&userId=<c:out value="${user.userid}"/>">Delete</a></td>
         </tr>
     </c:forEach>
+    </tbody>
 </table>
-<hr/>
+<p><a href="UserController?action=insert">Add User</a></p>
 </body>
 </html>
